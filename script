@@ -1,0 +1,74 @@
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // --- Mobile Navigation Toggle ---
+    const burger = document.querySelector('.burger');
+    const nav = document.querySelector('.nav-links');
+    const navLinks = document.querySelectorAll('.nav-links li');
+
+    burger.addEventListener('click', () => {
+        // Toggle Nav
+        nav.classList.toggle('nav-active');
+
+        // Animate Links
+        navLinks.forEach((link, index) => {
+            if (link.style.animation) {
+                link.style.animation = '';
+            } else {
+                link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+            }
+        });
+
+        // Burger Animation
+        burger.classList.toggle('toggle');
+    });
+
+    // Close mobile menu when a link is clicked
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            nav.classList.remove('nav-active');
+            burger.classList.remove('toggle');
+            // Reset animations
+            navLinks.forEach(l => l.style.animation = '');
+        });
+    });
+
+    // --- Contact Form Handling ---
+    const contactForm = document.getElementById('contact-form');
+
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault(); // Prevents the page from reloading
+        
+        // In a real project, you would send this data to a server.
+        // For this assignment, we will just show a success message.
+        
+        const name = contactForm.querySelector('input[type="text"]').value;
+        
+        alert(`Thank you, ${name}! Your message has been sent. (Note: This is a demo form)`);
+        
+        contactForm.reset(); // Clear the form
+    });
+
+    // --- Scroll Reveal Animation (Optional Bonus) ---
+    // This adds a simple fade-in effect as you scroll down
+    const observerOptions = {
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Apply to sections
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(20px)';
+        section.style.transition = 'all 0.6s ease-out';
+        observer.observe(section);
+    });
+});
